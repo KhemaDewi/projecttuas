@@ -1,0 +1,125 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+<div class="container mt-4" style="background: #f9f9f9; padding: 20px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+  <h2 style="text-align: center; color: #4b79a1; font-weight: bold;">Jenis Bimbel</h2>
+
+  <!-- Loader -->
+  <div class="d-flex justify-content-center mt-4" *ngIf="isLoading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Tombol untuk membuka modal -->
+  <button *ngIf="userRole === 'admin'" type="button " class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahJenisbimbelModal">
+    Tambah Jenis Bimbel
+  </button>
+
+  <!-- Input Pencarian dengan Icon -->
+  <div class="d-flex justify-content-end mb-3">
+    <div class="input-group" style="width: 200px;">
+   <input
+     type="text"
+     class="form-control"
+     placeholder="Cari Jenis Bimbel..."
+     [(ngModel)]="searchTerm"
+     (input)="filterJenisBimbel()"
+   />
+   <span class="input-group-text">
+     <i class="bi bi-search"></i>
+   </span>
+ </div>
+</div>
+
+  <!-- Modal Tambah Fakultas -->
+  <div class="modal fade" id="tambahJenisbimbelModal" tabindex="-1" aria-labelledby="tambahJenisbimbelModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tambahJenisbimbelModalLabel" >
+            Tambah Jenis Bimbel
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="jenisbimbelForm" (ngSubmit)="addJenisbimbel()">
+            <div class="mb-3">
+              <label for="nama" class="form-label">Nama Bimbel</label>
+              <input id="nama" type="text" class="form-control" formControlName="nama" />
+            </div>
+            <div class="mb-3">
+              <label for="singkatan" class="form-label">Singkatan</label>
+              <input id="singkatan" type="text" class="form-control" formControlName="singkatan" />
+            </div>
+            <div class="mb-3">
+              <label for="harga" class="form-label">Harga</label>
+              <input id="harga" type="text" class="form-control" formControlName="harga" />
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+              {{ isSubmitting ? "Menyimpan..." : "Tambah Jenis Bimbel" }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Edit Prodi -->
+  <div class="modal" *ngIf="isEditModalVisible && userRole === 'admin'" style="display: block; background: rgba(0, 0, 0, 0.5)">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editJenisbimbelModalLabel">
+            Ubah Data Jenis Bimbel
+          </h5>
+          <button type="button" class="btn-close" (click)=" isEditModalVisible = false" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="jenisbimbelForm" (ngSubmit)="updateJenisbimbel()">
+            <div class="mb-3">
+              <label for="editnama" class="form-label">Nama</label>
+              <input id="editnama" type="text" class="form-control" formControlName="nama" />
+            </div>
+            <div class="mb-3">
+              <label for="editsingkatan" class="form-label">Singkatan</label>
+              <input id="editsingkatan" type="text" class="form-control" formControlName="singkatan" />
+            </div>
+            <div class="mb-3">
+              <label for="editharga" class="form-label">Harga</label>
+              <input id="editharga" type="text" class="form-control" formControlName="harga" />
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+              {{ isSubmitting ? "Menyimpan..." : "Ubah Data JenisBimbel" }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Jenis Bimbel -->
+  <table class="table table-bordered table-striped" *ngIf="!isLoading">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Singkatan</th>
+        <th>Harga</th>
+        <th *ngIf="userRole === 'admin'">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of filteredJenisBimbel">
+        <td>{{ item.nama }}</td>
+        <td>{{ item.singkatan }}</td>
+        <td>{{ item.harga }}</td>
+        <td>
+          <!-- Tombol Edit -->
+          <button *ngIf="userRole === 'admin'" type="button" class="btn btn-warning btn-sm me-2" (click)="getJenisbimbelById(item._id)"
+            title="Ubah Data Jenisbimbel">
+            Edit
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
