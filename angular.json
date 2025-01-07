@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "spa-angular": {
+    "projecttuas": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/spa-angular",
+            "outputPath": "dist/projecttuas",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "spa-angular:build:production"
+              "buildTarget": "projecttuas:build:production"
             },
             "development": {
-              "buildTarget": "spa-angular:build:development"
+              "buildTarget": "projecttuas:build:development"
             }
           },
           "defaultConfiguration": "development"
